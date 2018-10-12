@@ -1,19 +1,37 @@
 import numpy as np
 
-from matplotlib import pyplot as plt
 
-
-def avg_baseline(trace, spike_times_idx baseline_end_time, spike_half_width=3, dt):
+def subthreshold_analysis(trace, spike_times_idx, baseline_end_time, ccw_t, cw_t):
     """
 
-    :param np.array trace:
-    :param np.array spike_times:
-    :param int baseline_end_time:
+    :param np.array trace: Ephys recording
+    :param np.array spike_times_idx: array of INDICES where spikes are detected
+    :param int baseline_end_time: end time of baseline period
+    :param np.array ccw_t: array of INDICES where mouse is rotated CCW
+    :param np.array cw_t: array of INDICES where mouse is rotated CW
+    :return:
+    """
+    avg_baseline_vm = avg_baseline(trace, spike_times_idx, baseline_end_time)
+    normalised_trace = trace.copy() - avg_baseline_vm
+
+    avg_vm_ccw = normalised_trace[ccw_t].mean()
+    avg_vm_cw = normalised_trace[cw_t].mean()
+    DSI_subthreshold = avg_vm_ccw/avg_vm_cw
+
+    return avg_vm_ccw, avg_vm_cw, DSI_subthreshold
+
+
+def avg_baseline(trace, spike_times_idx, baseline_end_time, spike_half_width=3, dt=0.12):
+    """
+
+    :param np.array trace: Ephys recording
+    :param np.array spike_times_idx: array of indices where spikes are detected
+    :param int baseline_end_time: end time of baseline period
     :param int spike_half_width:
     :param int dt:
     :return:
     """
-    clipped_trace = clip_spikes(trace, spike_times_idx, spike_half_width,dt)
+    clipped_trace = clip_spikes(trace, spike_times_idx, spike_half_width)
 
     baseline_end_pt = baseline_end_time/dt
     avg_baseline_vm = clipped_trace[:baseline_end_pt].mean()
@@ -21,7 +39,7 @@ def avg_baseline(trace, spike_times_idx baseline_end_time, spike_half_width=3, d
     return avg_baseline_vm
 
 
-def clip_spikes(input_trace, spike_times_idx, spike_half_width=3, avg_window_width=5,dt):
+def clip_spikes(input_trace, spike_times_idx, spike_half_width=3, avg_window_width=5,dt=0.12):
     """
 
     :param np.array input_trace:
