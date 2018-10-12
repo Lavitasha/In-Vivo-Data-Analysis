@@ -21,9 +21,6 @@ def main():
     plot_differential_plot_direction(differential, direction, sampling_interval)
 
 
-
-
-
 def get_direction(data):
     """
     :param data: Movement command waveform

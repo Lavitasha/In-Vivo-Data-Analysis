@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from scipy.signal import savgol_filter
 from scipy.signal import find_peaks as scipy_find_peaks
 
+
 def load_csv(data_path):
     """
     load a csv file
@@ -13,6 +14,7 @@ def load_csv(data_path):
     dataframe = pandas.read_csv(data_path)
 
     return dataframe
+
 
 def box_smooth(y, box_pts):
     """
@@ -26,6 +28,7 @@ def box_smooth(y, box_pts):
 
     return y_smooth
 
+
 def subtract_baseline(signal, window_width):
     """
     subtract the DC offset of a signal using a box filter
@@ -37,7 +40,8 @@ def subtract_baseline(signal, window_width):
     # subtract baseline
     return signal - baseline
 
-def find_spike_times(signal, poly_order, window_width, refractory_period, threshold):
+
+def find_spike_times(signal, poly_order=1, window_width=501, refractory_period=1000, threshold=15):
     """
     find peaks of a sav-gol smoothed and offest 1D voltage trace
 
@@ -55,6 +59,7 @@ def find_spike_times(signal, poly_order, window_width, refractory_period, thresh
     peak_idxs, peak_dict = scipy_find_peaks(processed_offset, distance=refractory_period, height=threshold)
 
     return peak_idxs
+
 
 def main():
     data_path = "data/studentCourse_Vm.csv"
