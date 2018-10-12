@@ -15,9 +15,13 @@ def main():
 
     movement_first_pnt_idx, movement_last_pnt_idx = get_movement_range(data)
     differential, direction = get_direction(data)
+    get_direction_index(direction)
 
     plot_raw_data(data, movement_first_pnt_idx, movement_last_pnt_idx, sampling_interval=sampling_interval)
     plot_differential_plot_direction(differential, direction, sampling_interval)
+
+
+
 
 
 def get_direction(data):
@@ -32,6 +36,14 @@ def get_direction(data):
     direction[differential > 0] = 1
     direction[differential < 0] = -1
     return differential, direction
+
+
+def get_direction_index(direction):
+    movement_clockwise_idx = [np.where(direction == 1)[0][0:]]
+    movement_anticlockwise_idx = [np.where(direction == -1)[0][0:]]
+    print(movement_clockwise_idx)
+    print(movement_anticlockwise_idx)
+    return movement_clockwise_idx, movement_anticlockwise_idx
 
 
 def get_movement_range(data):
@@ -76,8 +88,3 @@ def plot_differential_plot_direction(differential, direction, sampling_interval)
 
 if __name__ == '__main__':
     main()
-
-
-# d
-# ti is the index at which the turns start (for the time: ti*0.0001)
-# tf is the index at which the turn ends (for the time: tf*0.0001)
