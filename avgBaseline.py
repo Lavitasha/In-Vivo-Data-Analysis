@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def avg_baseline(trace, spike_times, baseline_end_time, spike_half_width=3, dt):
+def avg_baseline(trace, spike_times_idx baseline_end_time, spike_half_width=3, dt):
     """
 
     :param np.array trace:
@@ -13,7 +13,7 @@ def avg_baseline(trace, spike_times, baseline_end_time, spike_half_width=3, dt):
     :param int dt:
     :return:
     """
-    clipped_trace = clip_spikes(trace, spike_times, spike_half_width,dt)
+    clipped_trace = clip_spikes(trace, spike_times_idx, spike_half_width,dt)
 
     baseline_end_pt = baseline_end_time/dt
     avg_baseline_vm = clipped_trace[:baseline_end_pt].mean()
